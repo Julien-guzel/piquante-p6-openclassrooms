@@ -7,7 +7,6 @@ const thingSchema = mongoose.Schema({
     manufacturer: { type: String, required: true },
     description: { type: String, required: true },
     mainPepper: { type: String, required: true },
-    mainPepper: { type: String, required: true },
     imageUrl: { type: String },
     heat: { type: Number, required: true },
     likes: { type: Number, require: true, default: 0 },
@@ -16,4 +15,4 @@ const thingSchema = mongoose.Schema({
     usersDisliked: { type: [String] }
 });
 
-module.exports = mongoose.model('Thing', thingSchema);
+module.exports = mongoose.model('Sauce', thingSchema);
