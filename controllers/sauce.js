@@ -1,9 +1,11 @@
+// import les "fs" et le models des sauces
 const modelsSauces = require('../models/sauces');
 const fs = require('fs');
 
 
-
+// creation de sauce
 exports.creationSauce = (req, res, next) => {
+  // intercep les données de l'objet crée
   const objetSauce = JSON.parse(req.body.sauce);
   delete objetSauce._id;
   delete objetSauce._userId;
@@ -13,13 +15,14 @@ exports.creationSauce = (req, res, next) => {
       imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
   });
 
+  // sauvegarde la sauce dans la base de donnée
   sauce.save()
   .then(() => { res.status(201).json({message: 'Objet enregistré !'})})
   .catch(error => { res.status(400).json( { error })})
   };
 
 
-
+// Recuperation d'une sauce
 exports.recupUneSauce = (req, res, next) => {
   modelsSauces.findOne({ _id: req.params.id })
       .then(sauce => res.status(200).json(sauce))
@@ -27,7 +30,7 @@ exports.recupUneSauce = (req, res, next) => {
   };
 
 
-
+// modification de la sauce
   exports.modifiSauce = (req, res, next) => {
     const objetSauce = req.file ? {
         ...JSON.parse(req.body.sauce),
@@ -51,7 +54,7 @@ exports.recupUneSauce = (req, res, next) => {
  };
 
 
-
+// suppresison de la sauce
  exports.SuppressionSauce = (req, res, next) => {
   modelsSauces.findOne({ _id: req.params.id})
       .then(sauce => {
@@ -73,7 +76,7 @@ exports.recupUneSauce = (req, res, next) => {
 
 
 
-
+// recuparation de toutes les sauces
 exports.recupToutesSauces = (req, res, next) => {
     modelsSauces.find()
       .then(sauces => res.status(200).json(sauces))
@@ -111,6 +114,8 @@ exports.likeDislikeSauce = (req, res) => {
       /* Si le client annule son choix */
     } else {
       modelsSauces.findOne({ _id: req.params.id }).then((resultat) => {
+
+        
         if (resultat.usersLiked.includes(req.body.userId)) {
           modelsSauces.findOneAndUpdate(
             { _id: req.params.id },
@@ -118,6 +123,8 @@ exports.likeDislikeSauce = (req, res) => {
           )
             .then(() => res.status(200).json({ message: "like retiré !" }))
             .catch((error) => res.status(400).json({ error }));
+
+
         } else if (resultat.usersDisliked.includes(req.body.userId)) {
           modelsSauces.findOneAndUpdate(
             { _id: req.params.id },

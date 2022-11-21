@@ -1,11 +1,12 @@
+// import plusieurs packages
 const express = require("express");
 const mongoose = require("mongoose");
-
 const path = require('path');
+// import des routes
+const routesSauce = require('./routes/sauce');
+const routesUtilisateur = require('./routes/utilisateur');
 
-const stuffRoutes = require('./routes/sauce');
-const userRoutes = require('./routes/user');
-
+// connection a mongobd
 mongoose
   .connect(
     "mongodb+srv://irfan:MuXSNYTCI5YjFttS@cluster1.pxly6jw.mongodb.net/?retryWrites=true&w=majority",
@@ -14,19 +15,28 @@ mongoose
   .then(() => console.log("Connexion à MongoDB réussie !"))
   .catch(() => console.log("Connexion à MongoDB échouée !"));
 
+//  appel express
 const app = express();
 
+// donne acces au corps de la requete
 app.use(express.json());
 
+// middlewear general
+// permet a l'application d'acceder à l'api
 app.use((req, res, next) => {
+  // qui accede a l'api
   res.setHeader("Access-Control-Allow-Origin", "*");
+  // qu'elle header sont autorisé
   res.setHeader("Access-Control-Allow-Headers","Origin, X-Requested-With, Content, Accept, Content-Type, Authorization");
+  // les methodes possible
   res.setHeader("Access-Control-Allow-Methods","GET, POST, PUT, DELETE, PATCH, OPTIONS");
   next();
 });
 
-app.use('/api/sauces', stuffRoutes);
-app.use('/api/auth', userRoutes);
+// requet fait par le frontend
+app.use('/api/sauces', routesSauce);
+app.use('/api/auth', routesUtilisateur);
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
+// exports "app"
 module.exports = app;
