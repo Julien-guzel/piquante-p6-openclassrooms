@@ -62,7 +62,8 @@ exports.recupUneSauce = (req, res, next) => {
               res.status(401).json({message: 'Not authorized'});
           } else {
               const nomDeFichier = sauce.imageUrl.split('/images/')[1];
-              fs.unlink(`images/${nomDeFichier}`, () => {
+              fs.unlink(`images/${nomDeFichier}`, (error) => {
+                console.log(error);
                 modelsSauces.deleteOne({_id: req.params.id})
                       .then(() => { res.status(200).json({message: 'Objet supprimé !'})})
                       .catch(error => res.status(401).json({ error }));
