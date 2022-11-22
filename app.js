@@ -8,12 +8,10 @@ const routesUtilisateur = require('./routes/utilisateur');
 
 require('dotenv').config()
 
-console.log(process.env.un)
-
 // connection a mongobd
 mongoose
   .connect(
-    'mongodb+srv:////${process.env.un}:MuXSNYTCI5YjFttS@cluster1.pxly6jw.mongodb.net/?retryWrites=true&w=majority',
+    process.env.Connexion_a_bango_db,
     { useNewUrlParser: true, useUnifiedTopology: true }
   )
   .then(() => console.log("Connexion à MongoDB réussie !"))

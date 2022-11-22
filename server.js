@@ -2,6 +2,7 @@
 const http = require('http');
 const app = require('./app');
 
+
 // renvoie un port le 3000 ou un valide
 const normalizePort = val => {
   const port = parseInt(val, 10);
